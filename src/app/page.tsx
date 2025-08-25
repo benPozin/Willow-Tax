@@ -1,103 +1,121 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { FormEvent, useState } from "react";
+
+export default function Page() {
+  const [status, setStatus] = useState<"idle" | "loading" | "ok" | "error">("idle");
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries()) as {
+      name?: string;
+      email?: string;
+    };
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: data.name, email: data.email }),
+      });
+      if (!res.ok) throw new Error();
+      setStatus("ok");
+      form.reset();
+    } catch {
+      setStatus("error");
+    }
+  }
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className="min-h-dvh w-full flex items-center justify-center p-4 md:p-8">
+      {/* Card */}
+      <div
+        className="
+          w-full max-w-2xl rounded-3xl border border-black/10 bg-willow-card
+          shadow-card p-6 md:p-10
+        "
+      >
+        {/* Top copy */}
+        <section className="text-center space-y-3 md:space-y-4">
+          <h1 className="font-serif font-bold tracking-tight text-2xl md:text-[28px] leading-[1.2]">
+            Automate Tax Slips. Save Hours. Reduce Errors.
+          </h1>
+          <p className="mx-auto max-w-prose text-sm md:text-base text-neutral-800">
+            WillowTax makes T4s, T5s, and other slips simple, fast, and compliant.
+            Built for accountants and business owners who want to reclaim tax season.
+          </p>
+        </section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        {/* Benefits */}
+        <ul className="mt-6 md:mt-8 space-y-3 text-sm md:text-[15px] text-willow-text">
+          <li className="flex gap-3 items-start">
+            <span className="mt-0.5"> </span>
+            <span><span className="font-semibold">Save Time</span> - input tax slips details quickly.</span>
+          </li>
+          <li className="flex gap-3 items-start">
+            <span className="mt-0.5"> </span>
+            <span><span className="font-semibold">Reduce Errors</span> - automated compliance checks.</span>
+          </li>
+          <li className="flex gap-3 items-start">
+            <span className="mt-0.5"> </span>
+            <span><span className="font-semibold">Increase Profitability</span> - more time for billable work, less on admin.</span>
+          </li>
+        </ul>
+
+        {/* Divider with even rhythm */}
+        <div className="my-8 md:my-10 h-px bg-black/10" />
+
+        {/* Waitlist title */}
+        <h2 className="text-center font-serif font-bold text-xl md:text-2xl leading-tight mb-4">
+          Join the waitlist for<br className="hidden md:block" /> WillowTax
+        </h2>
+
+        {/* Form */}
+        <form onSubmit={onSubmit} className="grid gap-3 md:gap-4">
+          <input
+            required
+            name="name"
+            type="text"
+            placeholder="Full Name"
+            className="
+              h-12 md:h-12 w-full rounded-lg border border-black/15 bg-willow-input
+              px-4 outline-none focus:ring-2 focus:ring-willow-ring
+            "
+          />
+          <input
+            required
+            name="email"
+            type="email"
+            placeholder="Email Address"
+            className="
+              h-12 md:h-12 w-full rounded-lg border border-black/15 bg-willow-input
+              px-4 outline-none focus:ring-2 focus:ring-willow-ring
+            "
+          />
+          <button
+            type="submit"
+            disabled={status === "loading"}
+            className="
+              h-12 md:h-12 rounded-lg bg-willow-accent text-white
+              hover:bg-willow-accentHover transition
+              disabled:opacity-70
+            "
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            {status === "loading" ? "Submitting…" : "Join the Waitlist for Early Access"}
+          </button>
+        </form>
+
+        {/* Inline feedback keeps spacing consistent */}
+        <div className="mt-3 min-h-[1.25rem] text-center text-sm">
+          {status === "ok" && (
+            <span className="text-green-700">Thanks! You’re on the list.</span>
+          )}
+          {status === "error" && (
+            <span className="text-red-700">Something went wrong. Try again.</span>
+          )}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+    </main>
   );
 }

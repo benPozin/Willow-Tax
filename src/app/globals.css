@@ -1,26 +1,32 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Tokens with Tailwind v4 @theme */
+@theme {
+  --color-willow-bg: #0b0f10;      /* page background */
+  --color-willow-card: #E3ECE6;    /* light sage card */
+  --color-willow-text: #0e2b1f;    /* deep green text */
+  --color-willow-accent: #1F6B4A;  /* button */
+  --color-willow-accentHover: #17553A;
+  --color-willow-input: #F7FAF8;   /* inputs */
+  --color-willow-ring: #9DC8B3;    /* focus ring */
+
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-card: 0 10px 25px -12px rgba(0,0,0,0.25);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* Page background + base typography */
+html, body { height: 100%; }
+body { background: var(--color-willow-bg); color: var(--color-willow-text); font-family: var(--font-sans); }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+.font-serif { font-family: var(--font-serif); }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+/* Utilities mapped to tokens */
+.bg-willow-card { background-color: var(--color-willow-card); }
+.bg-willow-input { background-color: var(--color-willow-input); }
+.bg-willow-accent { background-color: var(--color-willow-accent); }
+.hover\:bg-willow-accentHover:hover { background-color: var(--color-willow-accentHover); }
+.text-willow-text { color: var(--color-willow-text); }
+.shadow-card { box-shadow: var(--shadow-card); }
+.focus\:ring-willow-ring:focus { box-shadow: 0 0 0 2px var(--color-willow-ring); }
