@@ -9,7 +9,6 @@ export default function Page() {
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries()) as {
-      name?: string;
       email?: string;
     };
     setStatus("loading");
@@ -17,7 +16,7 @@ export default function Page() {
       const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: data.name, email: data.email }),
+        body: JSON.stringify({ email: data.email }),
       });
       if (!res.ok) throw new Error();
       setStatus("ok");
@@ -28,94 +27,59 @@ export default function Page() {
   }
 
   return (
-    <main className="min-h-dvh w-full flex items-center justify-center p-4 md:p-8">
-      {/* Card */}
-      <div
-        className="
-          w-full max-w-2xl rounded-3xl border border-black/10 bg-willow-card
-          shadow-card p-6 md:p-10
-        "
-      >
-        {/* Top copy */}
-        <section className="text-center space-y-3 md:space-y-4">
-          <h1 className="font-serif font-bold tracking-tight text-2xl md:text-[28px] leading-[1.2]">
-            Automate Tax Slips. Save Hours. Reduce Errors.
-          </h1>
-          <p className="mx-auto max-w-prose text-sm md:text-base text-neutral-800">
-            WillowTax makes T4s, T5s, and other slips simple, fast, and compliant.
-            Built for accountants and business owners who want to reclaim tax season.
-          </p>
-        </section>
+    <main className="min-h-dvh flex flex-col bg-gradient-to-b from-[#e3ece6] to-[#d5e2db] px-4">
+      {/* Centered content */}
+      <div className="flex-1 flex flex-col items-center justify-center">
+        {/* Badge */}
+        <div className="mb-4">
+          <span className="rounded-full bg-white/80 px-4 py-1 text-xs font-medium text-willow-text shadow">
+            WillowTax v1 • Coming Soon
+          </span>
+        </div>
 
-        {/* Benefits */}
-        <ul className="mt-6 md:mt-8 space-y-3 text-sm md:text-[15px] text-willow-text">
-          <li className="flex gap-3 items-start">
-            <span className="mt-0.5"> </span>
-            <span><span className="font-semibold">Save Time</span> - input tax slips details quickly.</span>
-          </li>
-          <li className="flex gap-3 items-start">
-            <span className="mt-0.5"> </span>
-            <span><span className="font-semibold">Reduce Errors</span> - automated compliance checks.</span>
-          </li>
-          <li className="flex gap-3 items-start">
-            <span className="mt-0.5"> </span>
-            <span><span className="font-semibold">Increase Profitability</span> - more time for billable work, less on admin.</span>
-          </li>
-        </ul>
+        {/* Headline */}
+        <h1 className="text-center font-bold tracking-tight text-4xl md:text-[4rem] max-w-4xl text-willow-text leading-[1.1]">
+          Save Hours. <br className="hidden md:block" />
+          Reduce Errors.
+        </h1>
 
-        {/* Divider with even rhythm */}
-        <div className="my-8 md:my-10 h-px bg-black/10" />
-
-        {/* Waitlist title */}
-        <h2 className="text-center font-serif font-bold text-xl md:text-2xl leading-tight mb-4">
-          Join the waitlist for<br className="hidden md:block" /> WillowTax
-        </h2>
+        {/* Subheading */}
+        <p className="mt-2 max-w-xl text-center text-sm md:text-base text-neutral-700">
+          Busy season made easy: Automatic slip entry, no typing required.
+        </p>
 
         {/* Form */}
-        <form onSubmit={onSubmit} className="grid gap-3 md:gap-4">
+        <form
+          onSubmit={onSubmit}
+          className="mt-8 flex w-full max-w-md flex-col sm:flex-row items-center gap-3 bg-white rounded-lg p-2 shadow"
+        >
           <input
             required
-            name="name"
-            type="text"
-            placeholder="Full Name"
-            className="
-              h-12 md:h-12 w-full rounded-lg border border-black/15 bg-willow-input
-              px-4 outline-none focus:ring-2 focus:ring-willow-ring
-            "
-          />
-          <input
-            required
-            name="email"
             type="email"
-            placeholder="Email Address"
-            className="
-              h-12 md:h-12 w-full rounded-lg border border-black/15 bg-willow-input
-              px-4 outline-none focus:ring-2 focus:ring-willow-ring
-            "
+            name="email"
+            placeholder="Your email..."
+            className="flex-1 rounded-md px-4 py-2 text-sm border border-transparent focus:outline-none focus:ring-2 focus:ring-willow-ring"
           />
           <button
             type="submit"
             disabled={status === "loading"}
-            className="
-              h-12 md:h-12 rounded-lg bg-willow-accent text-white
-              hover:bg-willow-accentHover transition
-              disabled:opacity-70
-            "
+            className="w-full sm:w-auto rounded-md bg-willow-accent px-6 py-2 text-sm font-medium text-white shadow hover:bg-willow-accentHover transition disabled:opacity-70"
           >
-            {status === "loading" ? "Submitting…" : "Join the Waitlist for Early Access"}
+            {status === "loading" ? "Joining…" : "Join the Waitlist"}
           </button>
         </form>
 
-        {/* Inline feedback keeps spacing consistent */}
-        <div className="mt-3 min-h-[1.25rem] text-center text-sm">
-          {status === "ok" && (
-            <span className="text-green-700">Thanks! You’re on the list.</span>
-          )}
-          {status === "error" && (
-            <span className="text-red-700">Something went wrong. Try again.</span>
-          )}
+        {/* Feedback */}
+        <div className="mt-3 min-h-[1.25rem] text-sm text-center">
+          {status === "ok" && <span className="text-green-700">Thanks! You’re on the list.</span>}
+          {status === "error" && <span className="text-red-700">Something went wrong. Try again.</span>}
         </div>
       </div>
+
+      {/* Footer note pinned lower */}
+      <p className="mb-6 text-center text-xs text-neutral-600">
+        Built with expertise. <span className="font-semibold">Powered by AI.</span> Focused on you.
+      </p>
     </main>
   );
 }
