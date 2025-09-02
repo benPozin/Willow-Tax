@@ -27,44 +27,39 @@ export default function Page() {
 
   return (
     <main className="min-h-dvh flex flex-col bg-gradient-to-b from-[#e3ece6] to-[#d5e2db] px-4">
-      {/* Centered content */}
-      <div className="flex-1 flex flex-col items-center justify-center">
-        {/* Badge */}
-        <div className="mb-4">
-          <span className="rounded-full bg-white/80 px-4 py-1 text-xs font-medium text-willow-text shadow">
-            Coming Soon
-          </span>
-        </div>
-
+      {/* Content pushed up */}
+      <div className="flex flex-col items-center text-center mt-6 md:mt-10">
         {/* Logo */}
-        <div className="mb-5 flex justify-center">
-          <Image
-            src="/willowtax.png" // replace with your uploaded file path
-            alt="WillowTax"
-            width={400}      // make this larger (try 300–500 for a big logo)
-            height={120}
-            className="h-auto w-auto max-w-xs md:max-w-md lg:max-w-lg"
-            priority
-          />
-        </div>
+        <Image
+          src="/willowtax.png"
+          alt="WillowTax"
+          width={200}
+          height={200}
+          className="h-auto w-[140px] md:w-[180px] lg:w-[220px] mb-3"
+          priority
+        />
 
+        {/* Badge */}
+        <span className="mb-5 rounded-full bg-white/80 px-4 py-1 text-xs font-medium text-willow-text shadow">
+          Coming Soon
+        </span>
 
-        {/* Headlines */}
-        <h1 className="text-center font-bold tracking-tight text-4xl md:text-[4rem] max-w-4xl text-willow-text leading-[1.1]">
-          Stop Typing Tax Slips
+        {/* Headline */}
+        <h1 className="font-bold tracking-tight text-3xl md:text-[3rem] max-w-3xl text-willow-text leading-snug">
+          Stop Filling In Tax Slips
           <br className="hidden md:block" />
           Start Reducing Hours Now
         </h1>
 
         {/* Subheading */}
-        <p className="mt-2 max-w-xl text-center text-sm md:text-base text-neutral-700">
+        <p className="mt-3 max-w-xl text-sm md:text-base text-neutral-700">
           Busy season made easy: Automatic slip entry, no typing required
         </p>
 
         {/* Form */}
         <form
           onSubmit={onSubmit}
-          className="mt-8 flex w-full max-w-md flex-col sm:flex-row items-center gap-3 bg-white rounded-lg p-2 shadow"
+          className="mt-6 flex w-full max-w-md flex-col sm:flex-row items-center gap-3 bg-white rounded-lg p-2 shadow"
         >
           <input
             required
@@ -83,14 +78,14 @@ export default function Page() {
         </form>
 
         {/* Feedback */}
-        <div className="mt-3 min-h-[1.25rem] text-sm text-center">
+        <div className="mt-2 min-h-[1.25rem] text-sm">
           {status === "ok" && <span className="text-green-700">Thanks! You’re on the list.</span>}
           {status === "error" && <span className="text-red-700">Something went wrong. Try again.</span>}
         </div>
       </div>
 
-      {/* Footer note pinned lower */}
-      <p className="mb-6 text-center text-xs text-neutral-600">
+      {/* Footer */}
+      <p className="mt-auto mb-6 text-center text-xs text-neutral-600">
         Built by tax preparers. <span className="font-semibold">Powered by AI.</span> Focused on you.
       </p>
     </main>
