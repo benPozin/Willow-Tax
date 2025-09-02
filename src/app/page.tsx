@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Image from "next/image";
 
 export default function Page() {
   const [status, setStatus] = useState<"idle" | "loading" | "ok" | "error">("idle");
@@ -8,9 +9,7 @@ export default function Page() {
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form).entries()) as {
-      email?: string;
-    };
+    const data = Object.fromEntries(new FormData(form).entries()) as { email?: string };
     setStatus("loading");
     try {
       const res = await fetch("/api/waitlist", {
@@ -33,19 +32,33 @@ export default function Page() {
         {/* Badge */}
         <div className="mb-4">
           <span className="rounded-full bg-white/80 px-4 py-1 text-xs font-medium text-willow-text shadow">
-            WillowTax v1 • Coming Soon
+            Coming Soon
           </span>
         </div>
 
-        {/* Headline */}
+        {/* Logo */}
+        <div className="mb-5 flex justify-center">
+          <Image
+            src="/willowtax.png" // replace with your uploaded file path
+            alt="WillowTax"
+            width={400}      // make this larger (try 300–500 for a big logo)
+            height={120}
+            className="h-auto w-auto max-w-xs md:max-w-md lg:max-w-lg"
+            priority
+          />
+        </div>
+
+
+        {/* Headlines */}
         <h1 className="text-center font-bold tracking-tight text-4xl md:text-[4rem] max-w-4xl text-willow-text leading-[1.1]">
-          Save Hours. <br className="hidden md:block" />
-          Reduce Errors.
+          Stop Typing Tax Slips
+          <br className="hidden md:block" />
+          Start Reducing Hours Now
         </h1>
 
         {/* Subheading */}
         <p className="mt-2 max-w-xl text-center text-sm md:text-base text-neutral-700">
-          Busy season made easy: Automatic slip entry, no typing required.
+          Busy season made easy: Automatic slip entry, no typing required
         </p>
 
         {/* Form */}
@@ -57,7 +70,7 @@ export default function Page() {
             required
             type="email"
             name="email"
-            placeholder="Your email..."
+            placeholder="Your email…"
             className="flex-1 rounded-md px-4 py-2 text-sm border border-transparent focus:outline-none focus:ring-2 focus:ring-willow-ring"
           />
           <button
@@ -65,7 +78,7 @@ export default function Page() {
             disabled={status === "loading"}
             className="w-full sm:w-auto rounded-md bg-willow-accent px-6 py-2 text-sm font-medium text-white shadow hover:bg-willow-accentHover transition disabled:opacity-70"
           >
-            {status === "loading" ? "Joining…" : "Join the Waitlist"}
+            {status === "loading" ? "Joining…" : "Join the waitlist"}
           </button>
         </form>
 
@@ -78,7 +91,7 @@ export default function Page() {
 
       {/* Footer note pinned lower */}
       <p className="mb-6 text-center text-xs text-neutral-600">
-        Built with expertise. <span className="font-semibold">Powered by AI.</span> Focused on you.
+        Built by tax preparers. <span className="font-semibold">Powered by AI.</span> Focused on you.
       </p>
     </main>
   );
